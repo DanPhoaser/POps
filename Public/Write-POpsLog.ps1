@@ -111,13 +111,14 @@ Function Write-POpsLog {
     
     #Obtain UTC offset 
     $UtcOffset = [timezone]::CurrentTimeZone.GetUtcOffset([datetime]::Now).TotalMinutes
-    
     $CurTimeHostFormat = $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff')
+
+    $HostMessage = ($CurTimeHostFormat + ' ' + "[$($MessageType)]" + ': ')
     If ($Message.Exception.Message) {
-        $HostMessage = ($CurTimeHostFormat + ' ' + "[$($MessageType)]" + ': ' + $Message.Exception.Message + "`n" + $Source) 
+        $HostMessage = ($HostMessage + $Message.Exception.Message + "`n" + $Source)
     }
     Else {
-        $HostMessage = ($CurTimeHostFormat + ' ' + "[$($MessageType)]" + ': ' + $Message) 
+        $HostMessage = ($HostMessage + $Message) 
     }
     If ( $null -eq $LogFile -or $LogFile -eq '') {
         $LogDir = 'C:\Windows\Temp\Write-POpsLog'
