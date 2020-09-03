@@ -110,10 +110,7 @@ Function Write-POpsLog {
     $ProcessID = $PID
     
     #Obtain UTC offset 
-    $DateTime = New-Object -ComObject WbemScripting.SWbemDateTime  
-    $DateTime.SetVarDate($(Get-Date)) 
-    $UtcValue = $DateTime.Value 
-    $UtcOffset = $UtcValue.Substring(21, $UtcValue.Length - 21)
+    $UtcOffset = [timezone]::CurrentTimeZone.GetUtcOffset([datetime]::Now).TotalMinutes
     
     $CurTimeHostFormat = $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff')
     If ($Message.Exception.Message) {
